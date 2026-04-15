@@ -1,0 +1,5 @@
+{
+  "encoder_model": "all-MiniLM-L6-v2",
+  "hidden_dim": 256,
+  "embedding_dim": 384
+}
