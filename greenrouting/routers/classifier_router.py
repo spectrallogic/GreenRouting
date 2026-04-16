@@ -15,7 +15,6 @@ import json
 from pathlib import Path
 from typing import Any
 
-import numpy as np
 import torch
 import torch.nn as nn
 from sentence_transformers import SentenceTransformer
@@ -27,14 +26,13 @@ from greenrouting.core.router import Router
 from greenrouting.core.taxonomy import Capability, QueryProfile
 from greenrouting.energy.green_score import GreenScorer
 
-
 # All capability labels in a fixed order for classification
 CAPABILITY_LABELS: list[str] = sorted([c.value for c in Capability])
 CAPABILITY_TO_IDX: dict[str, int] = {c: i for i, c in enumerate(CAPABILITY_LABELS)}
 IDX_TO_CAPABILITY: dict[int, str] = {i: c for c, i in CAPABILITY_TO_IDX.items()}
 
 OUTPUT_LENGTH_LABELS = ["short", "medium", "long"]
-OUTPUT_LENGTH_TO_IDX = {l: i for i, l in enumerate(OUTPUT_LENGTH_LABELS)}
+OUTPUT_LENGTH_TO_IDX = {label: i for i, label in enumerate(OUTPUT_LENGTH_LABELS)}
 
 
 class QueryClassifierHead(nn.Module):
@@ -109,9 +107,7 @@ class ClassifierRouter(Router):
         """Classify a query into a QueryProfile (what it needs)."""
         self.head.eval()
         with torch.no_grad():
-            embedding = self.encoder.encode(
-                query, convert_to_tensor=True, device=self.device
-            )
+            embedding = self.encoder.encode(query, convert_to_tensor=True, device=self.device)
             if embedding.dim() == 1:
                 embedding = embedding.unsqueeze(0)
 

@@ -138,9 +138,7 @@ def train_router(
                 cap_loss = -(cap_targets * cap_log_probs).sum(dim=-1).mean()
 
                 loss = (
-                    cap_loss
-                    + 0.5 * diff_loss_fn(diff_preds, diff_targets)
-                    + 0.3 * len_loss_fn(len_logits, len_targets)
+                    cap_loss + 0.5 * diff_loss_fn(diff_preds, diff_targets) + 0.3 * len_loss_fn(len_logits, len_targets)
                 )
 
                 optimizer.zero_grad()
@@ -158,8 +156,7 @@ def train_router(
             if val_loader:
                 val_metrics = _evaluate(router, val_loader)
                 metrics_str += (
-                    f" | val_cap_acc: {val_metrics['cap_acc']:.3f}, "
-                    f"val_diff_mae: {val_metrics['diff_mae']:.3f}"
+                    f" | val_cap_acc: {val_metrics['cap_acc']:.3f}, val_diff_mae: {val_metrics['diff_mae']:.3f}"
                 )
                 val_loss = val_metrics["loss"]
                 if val_loss < best_val_loss and save_path:
@@ -212,11 +209,7 @@ def _evaluate(
             cap_log_probs = torch.nn.functional.log_softmax(cap_logits, dim=-1)
             cap_loss = -(cap_targets * cap_log_probs).sum(dim=-1).mean()
 
-            loss = (
-                cap_loss
-                + 0.5 * diff_loss_fn(diff_preds, diff_targets)
-                + 0.3 * len_loss_fn(len_logits, len_targets)
-            )
+            loss = cap_loss + 0.5 * diff_loss_fn(diff_preds, diff_targets) + 0.3 * len_loss_fn(len_logits, len_targets)
             total_loss += loss.item()
 
             # Accuracy: compare argmax of prediction vs argmax of target

@@ -9,7 +9,6 @@ from greenrouting.core.decision import ModelScore, RoutingDecision
 from greenrouting.core.model_profile import ModelProfile
 from greenrouting.core.registry import ModelRegistry
 
-
 # Preset weight configurations
 PRESETS: dict[str, tuple[float, float, float]] = {
     "quality_first": (1.0, 0.1, 0.1),
@@ -135,9 +134,7 @@ class GreenScorer:
             norm_cost = cost / max_cost
             quality = quality_scores.get(m.name, 0.0)
 
-            green_score = (
-                self.alpha * quality - self.beta * norm_energy - self.gamma * norm_cost
-            )
+            green_score = self.alpha * quality - self.beta * norm_energy - self.gamma * norm_cost
 
             scores[m.name] = ModelScore(
                 model_name=m.name,
@@ -168,11 +165,7 @@ class GreenScorer:
         all_scores = self.score_all(registry, quality_scores)
 
         # Filter by minimum quality
-        candidates = {
-            name: score
-            for name, score in all_scores.items()
-            if score.quality_score >= min_quality
-        }
+        candidates = {name: score for name, score in all_scores.items() if score.quality_score >= min_quality}
 
         if not candidates:
             # Fallback: pick the highest quality model regardless

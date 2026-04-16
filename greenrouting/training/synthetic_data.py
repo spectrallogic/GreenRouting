@@ -441,143 +441,221 @@ SINGLE_TEMPLATES: dict[Capability, dict[int, list[str]]] = {
 
 MIXED_TEMPLATES: list[tuple[dict[str, float], int, str, list[str]]] = [
     # (capability_weights, difficulty, output_length, [templates])
-
     # Code + Math
-    ({"code": 0.5, "math": 0.35, "reasoning": 0.15}, 3, "long", [
-        "Write a Python function to solve a system of linear equations using Gaussian elimination.",
-        "Implement Newton's method for finding roots of a polynomial in Python.",
-        "Write code to compute the Monte Carlo estimate of pi.",
-        "Implement matrix multiplication from scratch in Python, then use it to solve Ax = b.",
-        "Write a Python script that numerically integrates a function using Simpson's rule.",
-        "Implement the Fast Fourier Transform (FFT) algorithm in Python.",
-        "Write code to fit a polynomial curve to a set of data points using least squares.",
-        "Implement a function to compute the PageRank of nodes in a graph.",
-    ]),
-    ({"code": 0.5, "math": 0.35, "reasoning": 0.15}, 4, "long", [
-        "Write a Python script that solves this differential equation: dy/dx = y*sin(x), y(0) = 1, using RK4.",
-        "Implement a neural network from scratch (no frameworks) that learns XOR.",
-        "Write an optimized matrix library supporting addition, multiplication, inversion, and eigenvalue decomposition.",
-        "Implement gradient descent with backpropagation for a simple 2-layer neural network.",
-        "Write a Black-Scholes option pricing calculator with Greeks computation.",
-    ]),
-
+    (
+        {"code": 0.5, "math": 0.35, "reasoning": 0.15},
+        3,
+        "long",
+        [
+            "Write a Python function to solve a system of linear equations using Gaussian elimination.",
+            "Implement Newton's method for finding roots of a polynomial in Python.",
+            "Write code to compute the Monte Carlo estimate of pi.",
+            "Implement matrix multiplication from scratch in Python, then use it to solve Ax = b.",
+            "Write a Python script that numerically integrates a function using Simpson's rule.",
+            "Implement the Fast Fourier Transform (FFT) algorithm in Python.",
+            "Write code to fit a polynomial curve to a set of data points using least squares.",
+            "Implement a function to compute the PageRank of nodes in a graph.",
+        ],
+    ),
+    (
+        {"code": 0.5, "math": 0.35, "reasoning": 0.15},
+        4,
+        "long",
+        [
+            "Write a Python script that solves this differential equation: dy/dx = y*sin(x), y(0) = 1, using RK4.",
+            "Implement a neural network from scratch (no frameworks) that learns XOR.",
+            "Write an optimized matrix library supporting addition, multiplication, inversion, and eigenvalue decomposition.",
+            "Implement gradient descent with backpropagation for a simple 2-layer neural network.",
+            "Write a Black-Scholes option pricing calculator with Greeks computation.",
+        ],
+    ),
     # Code + Knowledge
-    ({"code": 0.55, "knowledge": 0.3, "reasoning": 0.15}, 3, "long", [
-        "Write a Python script that fetches weather data from an API and plots temperature trends.",
-        "Implement a basic search engine: crawl pages, build an inverted index, rank by TF-IDF.",
-        "Write code to parse and analyze a CSV of stock market data, computing moving averages and RSI.",
-        "Build a simple chatbot using regex patterns and a knowledge base dictionary.",
-        "Write a Python script that scrapes a website and stores the data in SQLite.",
-        "Implement a recommendation system using collaborative filtering.",
-    ]),
-    ({"code": 0.45, "knowledge": 0.35, "reasoning": 0.2}, 4, "long", [
-        "Implement a simple version of the MapReduce paradigm in Python and explain the distributed computing concepts.",
-        "Write a blockchain implementation from scratch. Explain the cryptographic principles behind each component.",
-        "Build a basic compiler for arithmetic expressions: lexer, parser, AST, and code generation. Explain each phase.",
-        "Implement a basic version of the Raft consensus algorithm and explain the distributed systems concepts.",
-    ]),
-
+    (
+        {"code": 0.55, "knowledge": 0.3, "reasoning": 0.15},
+        3,
+        "long",
+        [
+            "Write a Python script that fetches weather data from an API and plots temperature trends.",
+            "Implement a basic search engine: crawl pages, build an inverted index, rank by TF-IDF.",
+            "Write code to parse and analyze a CSV of stock market data, computing moving averages and RSI.",
+            "Build a simple chatbot using regex patterns and a knowledge base dictionary.",
+            "Write a Python script that scrapes a website and stores the data in SQLite.",
+            "Implement a recommendation system using collaborative filtering.",
+        ],
+    ),
+    (
+        {"code": 0.45, "knowledge": 0.35, "reasoning": 0.2},
+        4,
+        "long",
+        [
+            "Implement a simple version of the MapReduce paradigm in Python and explain the distributed computing concepts.",
+            "Write a blockchain implementation from scratch. Explain the cryptographic principles behind each component.",
+            "Build a basic compiler for arithmetic expressions: lexer, parser, AST, and code generation. Explain each phase.",
+            "Implement a basic version of the Raft consensus algorithm and explain the distributed systems concepts.",
+        ],
+    ),
     # Reasoning + Knowledge
-    ({"reasoning": 0.5, "knowledge": 0.4, "instruction": 0.1}, 3, "long", [
-        "Compare and contrast capitalism and socialism. Analyze the strengths and weaknesses of each using historical examples.",
-        "Explain why antibiotics don't work on viruses. Walk through the biological reasoning step by step.",
-        "Analyze the trolley problem from utilitarian, deontological, and virtue ethics perspectives.",
-        "Why did the dinosaurs go extinct? Evaluate the competing theories and evidence for each.",
-        "Explain the paradox of tolerance and analyze its implications for free speech policy.",
-        "Analyze the pros and cons of nuclear energy versus renewable energy sources.",
-    ]),
-    ({"reasoning": 0.55, "knowledge": 0.35, "creative": 0.1}, 4, "long", [
-        "Analyze the ethical implications of AI-generated art. Consider perspectives of artists, consumers, and AI developers.",
-        "Evaluate the argument that consciousness is an emergent property of complex systems. Use evidence from neuroscience and philosophy.",
-        "Analyze whether social media has been net positive or negative for democracy. Use specific examples from multiple countries.",
-        "Compare the Copenhagen and Many-Worlds interpretations of quantum mechanics. Which has stronger philosophical support?",
-    ]),
-
+    (
+        {"reasoning": 0.5, "knowledge": 0.4, "instruction": 0.1},
+        3,
+        "long",
+        [
+            "Compare and contrast capitalism and socialism. Analyze the strengths and weaknesses of each using historical examples.",
+            "Explain why antibiotics don't work on viruses. Walk through the biological reasoning step by step.",
+            "Analyze the trolley problem from utilitarian, deontological, and virtue ethics perspectives.",
+            "Why did the dinosaurs go extinct? Evaluate the competing theories and evidence for each.",
+            "Explain the paradox of tolerance and analyze its implications for free speech policy.",
+            "Analyze the pros and cons of nuclear energy versus renewable energy sources.",
+        ],
+    ),
+    (
+        {"reasoning": 0.55, "knowledge": 0.35, "creative": 0.1},
+        4,
+        "long",
+        [
+            "Analyze the ethical implications of AI-generated art. Consider perspectives of artists, consumers, and AI developers.",
+            "Evaluate the argument that consciousness is an emergent property of complex systems. Use evidence from neuroscience and philosophy.",
+            "Analyze whether social media has been net positive or negative for democracy. Use specific examples from multiple countries.",
+            "Compare the Copenhagen and Many-Worlds interpretations of quantum mechanics. Which has stronger philosophical support?",
+        ],
+    ),
     # Creative + Knowledge
-    ({"creative": 0.55, "knowledge": 0.3, "instruction": 0.15}, 3, "long", [
-        "Write a short story set during the French Revolution that's historically accurate.",
-        "Create a science fiction story that accurately incorporates the concept of time dilation.",
-        "Write a dialogue between Einstein and Newton discussing modern physics.",
-        "Create a children's story that teaches the water cycle in an engaging way.",
-        "Write a historical fiction scene set on the Titanic, accurate to the timeline of events.",
-    ]),
-    ({"creative": 0.5, "knowledge": 0.3, "reasoning": 0.2}, 4, "long", [
-        "Write a hard science fiction short story that accurately portrays the challenges of interstellar travel, including relativistic effects.",
-        "Create a detective story where the clues involve real chemistry and the reader could theoretically solve it.",
-        "Write a philosophical dialogue between a human and an AI about consciousness, incorporating real AI research.",
-    ]),
-
+    (
+        {"creative": 0.55, "knowledge": 0.3, "instruction": 0.15},
+        3,
+        "long",
+        [
+            "Write a short story set during the French Revolution that's historically accurate.",
+            "Create a science fiction story that accurately incorporates the concept of time dilation.",
+            "Write a dialogue between Einstein and Newton discussing modern physics.",
+            "Create a children's story that teaches the water cycle in an engaging way.",
+            "Write a historical fiction scene set on the Titanic, accurate to the timeline of events.",
+        ],
+    ),
+    (
+        {"creative": 0.5, "knowledge": 0.3, "reasoning": 0.2},
+        4,
+        "long",
+        [
+            "Write a hard science fiction short story that accurately portrays the challenges of interstellar travel, including relativistic effects.",
+            "Create a detective story where the clues involve real chemistry and the reader could theoretically solve it.",
+            "Write a philosophical dialogue between a human and an AI about consciousness, incorporating real AI research.",
+        ],
+    ),
     # Math + Reasoning
-    ({"math": 0.5, "reasoning": 0.4, "knowledge": 0.1}, 4, "long", [
-        "Prove that the set of rational numbers is countable but the set of real numbers is not.",
-        "Explain the Monty Hall problem, prove the correct solution mathematically, and explain why human intuition fails.",
-        "Derive Bayes' theorem from first principles and explain three real-world applications with worked examples.",
-        "Analyze the mathematics behind RSA encryption. Why does it work? What would break it?",
-    ]),
-    ({"math": 0.45, "reasoning": 0.4, "knowledge": 0.15}, 5, "long", [
-        "Prove the impossibility of trisecting an arbitrary angle with compass and straightedge using field theory.",
-        "Explain why the continuum hypothesis is independent of ZFC. What are the implications?",
-        "Derive the Euler-Lagrange equation and use it to solve the brachistochrone problem.",
-    ]),
-
+    (
+        {"math": 0.5, "reasoning": 0.4, "knowledge": 0.1},
+        4,
+        "long",
+        [
+            "Prove that the set of rational numbers is countable but the set of real numbers is not.",
+            "Explain the Monty Hall problem, prove the correct solution mathematically, and explain why human intuition fails.",
+            "Derive Bayes' theorem from first principles and explain three real-world applications with worked examples.",
+            "Analyze the mathematics behind RSA encryption. Why does it work? What would break it?",
+        ],
+    ),
+    (
+        {"math": 0.45, "reasoning": 0.4, "knowledge": 0.15},
+        5,
+        "long",
+        [
+            "Prove the impossibility of trisecting an arbitrary angle with compass and straightedge using field theory.",
+            "Explain why the continuum hypothesis is independent of ZFC. What are the implications?",
+            "Derive the Euler-Lagrange equation and use it to solve the brachistochrone problem.",
+        ],
+    ),
     # Code + Creative
-    ({"code": 0.5, "creative": 0.35, "reasoning": 0.15}, 3, "long", [
-        "Write a Python program that generates ASCII art from text input.",
-        "Create a text-based adventure game in Python with at least 5 rooms and items.",
-        "Write a Python script that generates random poetry using Markov chains.",
-        "Build a terminal-based snake game in Python.",
-        "Write a program that creates generative art using turtle graphics.",
-    ]),
-
+    (
+        {"code": 0.5, "creative": 0.35, "reasoning": 0.15},
+        3,
+        "long",
+        [
+            "Write a Python program that generates ASCII art from text input.",
+            "Create a text-based adventure game in Python with at least 5 rooms and items.",
+            "Write a Python script that generates random poetry using Markov chains.",
+            "Build a terminal-based snake game in Python.",
+            "Write a program that creates generative art using turtle graphics.",
+        ],
+    ),
     # Multilingual + Knowledge
-    ({"multilingual": 0.5, "knowledge": 0.35, "instruction": 0.15}, 3, "medium", [
-        "Explain the concept of 'wabi-sabi' in Japanese culture and provide examples of how it appears in daily life. Include key Japanese terms.",
-        "Describe the differences between formal and informal speech in Korean, with examples of each register.",
-        "Explain the Arabic root system (trilateral roots) and show how it creates related words from a single root.",
-        "Describe the tonal system in Mandarin Chinese and explain how tone changes meaning, with examples.",
-    ]),
-
+    (
+        {"multilingual": 0.5, "knowledge": 0.35, "instruction": 0.15},
+        3,
+        "medium",
+        [
+            "Explain the concept of 'wabi-sabi' in Japanese culture and provide examples of how it appears in daily life. Include key Japanese terms.",
+            "Describe the differences between formal and informal speech in Korean, with examples of each register.",
+            "Explain the Arabic root system (trilateral roots) and show how it creates related words from a single root.",
+            "Describe the tonal system in Mandarin Chinese and explain how tone changes meaning, with examples.",
+        ],
+    ),
     # Instruction + Code
-    ({"instruction": 0.4, "code": 0.45, "knowledge": 0.15}, 3, "long", [
-        "Write a step-by-step tutorial for building a REST API in Flask. Include exactly 6 steps, each with a code block and explanation.",
-        "Create a beginner's guide to Git with exactly 10 commands, each explained with an example. Format as a numbered list.",
-        "Write documentation for a Python class with exactly 5 methods. Include docstrings, type hints, and usage examples for each.",
-    ]),
-    ({"instruction": 0.35, "code": 0.5, "reasoning": 0.15}, 4, "long", [
-        "Write a complete CI/CD pipeline configuration (GitHub Actions) for a Python project. Include: linting, testing, building, and deploying. Add comments explaining each step.",
-        "Create a comprehensive error handling guide for a REST API. Include: error types, status codes, error response format, middleware implementation, and testing strategy.",
-    ]),
-
+    (
+        {"instruction": 0.4, "code": 0.45, "knowledge": 0.15},
+        3,
+        "long",
+        [
+            "Write a step-by-step tutorial for building a REST API in Flask. Include exactly 6 steps, each with a code block and explanation.",
+            "Create a beginner's guide to Git with exactly 10 commands, each explained with an example. Format as a numbered list.",
+            "Write documentation for a Python class with exactly 5 methods. Include docstrings, type hints, and usage examples for each.",
+        ],
+    ),
+    (
+        {"instruction": 0.35, "code": 0.5, "reasoning": 0.15},
+        4,
+        "long",
+        [
+            "Write a complete CI/CD pipeline configuration (GitHub Actions) for a Python project. Include: linting, testing, building, and deploying. Add comments explaining each step.",
+            "Create a comprehensive error handling guide for a REST API. Include: error types, status codes, error response format, middleware implementation, and testing strategy.",
+        ],
+    ),
     # Simple + Instruction (formatted simple queries)
-    ({"simple": 0.6, "instruction": 0.4}, 1, "short", [
-        "In one word, what color is a banana?",
-        "Answer with just a number: How many continents are there?",
-        "Yes or no: Is the sun a star?",
-        "In exactly 3 words, describe the weather today.",
-        "Name one planet. Just the name, nothing else.",
-    ]),
-
+    (
+        {"simple": 0.6, "instruction": 0.4},
+        1,
+        "short",
+        [
+            "In one word, what color is a banana?",
+            "Answer with just a number: How many continents are there?",
+            "Yes or no: Is the sun a star?",
+            "In exactly 3 words, describe the weather today.",
+            "Name one planet. Just the name, nothing else.",
+        ],
+    ),
     # Reasoning + Code
-    ({"reasoning": 0.45, "code": 0.4, "math": 0.15}, 4, "long", [
-        "Design and implement a solution to the N-Queens problem. Explain your algorithm choice and prove its correctness.",
-        "Implement A* pathfinding. Prove that it's optimal when the heuristic is admissible and consistent.",
-        "Write a SAT solver using DPLL algorithm. Explain the logical foundations of boolean satisfiability.",
-        "Design a type inference algorithm for a simple functional language. Explain the unification process.",
-    ]),
-
+    (
+        {"reasoning": 0.45, "code": 0.4, "math": 0.15},
+        4,
+        "long",
+        [
+            "Design and implement a solution to the N-Queens problem. Explain your algorithm choice and prove its correctness.",
+            "Implement A* pathfinding. Prove that it's optimal when the heuristic is admissible and consistent.",
+            "Write a SAT solver using DPLL algorithm. Explain the logical foundations of boolean satisfiability.",
+            "Design a type inference algorithm for a simple functional language. Explain the unification process.",
+        ],
+    ),
     # Knowledge + Multilingual
-    ({"knowledge": 0.45, "multilingual": 0.4, "creative": 0.15}, 3, "long", [
-        "Explain the history and cultural significance of haiku poetry. Include examples in Japanese with English translations.",
-        "Describe the concept of 'hygge' in Danish culture. How does it compare to similar concepts in other cultures?",
-        "Explain the origin and evolution of the word 'algorithm' from Arabic to modern usage across languages.",
-    ]),
-
+    (
+        {"knowledge": 0.45, "multilingual": 0.4, "creative": 0.15},
+        3,
+        "long",
+        [
+            "Explain the history and cultural significance of haiku poetry. Include examples in Japanese with English translations.",
+            "Describe the concept of 'hygge' in Danish culture. How does it compare to similar concepts in other cultures?",
+            "Explain the origin and evolution of the word 'algorithm' from Arabic to modern usage across languages.",
+        ],
+    ),
     # Three-way even split
-    ({"code": 0.35, "math": 0.35, "reasoning": 0.3}, 5, "long", [
-        "Implement a cryptographic protocol (Diffie-Hellman key exchange) from scratch. Prove its security properties mathematically.",
-        "Build a neural network that learns to play tic-tac-toe using Q-learning. Derive the update equations and prove convergence.",
-        "Implement a numerical PDE solver using the finite element method. Derive the weak formulation and prove stability.",
-    ]),
+    (
+        {"code": 0.35, "math": 0.35, "reasoning": 0.3},
+        5,
+        "long",
+        [
+            "Implement a cryptographic protocol (Diffie-Hellman key exchange) from scratch. Prove its security properties mathematically.",
+            "Build a neural network that learns to play tic-tac-toe using Q-learning. Derive the update equations and prove convergence.",
+            "Implement a numerical PDE solver using the finite element method. Derive the weak formulation and prove stability.",
+        ],
+    ),
 ]
 
 
@@ -591,33 +669,100 @@ FILL_VALUES: dict[str, list] = {
     "small_a": list(range(2, 12)),
     "big_a": list(range(100, 1000, 50)),
     "country": [
-        "France", "Japan", "Brazil", "Egypt", "India", "Canada", "Australia",
-        "Mexico", "Germany", "Kenya", "South Korea", "Italy", "Spain", "China",
-        "Argentina", "Thailand", "Nigeria", "Sweden", "Turkey", "Russia",
+        "France",
+        "Japan",
+        "Brazil",
+        "Egypt",
+        "India",
+        "Canada",
+        "Australia",
+        "Mexico",
+        "Germany",
+        "Kenya",
+        "South Korea",
+        "Italy",
+        "Spain",
+        "China",
+        "Argentina",
+        "Thailand",
+        "Nigeria",
+        "Sweden",
+        "Turkey",
+        "Russia",
     ],
     "day": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"],
     "letter": ["A", "B", "C", "D", "F", "G", "H", "K", "M", "P", "R", "S", "T", "W"],
     "season": ["spring", "summer", "fall", "winter"],
     "word": [
-        "happy", "cold", "fast", "big", "light", "ancient", "difficult", "beautiful",
-        "gentle", "fierce", "quiet", "bright", "dark", "smooth", "rough",
-        "child", "mouse", "leaf", "woman", "tooth", "cactus", "crisis",
+        "happy",
+        "cold",
+        "fast",
+        "big",
+        "light",
+        "ancient",
+        "difficult",
+        "beautiful",
+        "gentle",
+        "fierce",
+        "quiet",
+        "bright",
+        "dark",
+        "smooth",
+        "rough",
+        "child",
+        "mouse",
+        "leaf",
+        "woman",
+        "tooth",
+        "cactus",
+        "crisis",
     ],
     "book": [
-        "Harry Potter", "1984", "Pride and Prejudice", "The Great Gatsby",
-        "To Kill a Mockingbird", "Brave New World", "The Hobbit", "Dune",
-        "Fahrenheit 451", "The Catcher in the Rye",
+        "Harry Potter",
+        "1984",
+        "Pride and Prejudice",
+        "The Great Gatsby",
+        "To Kill a Mockingbird",
+        "Brave New World",
+        "The Hobbit",
+        "Dune",
+        "Fahrenheit 451",
+        "The Catcher in the Rye",
     ],
     "square": [4, 9, 16, 25, 36, 49, 64, 81, 100, 121, 144, 169, 196, 225],
     "continent": ["Europe", "Asia", "Africa", "South America", "North America", "Oceania"],
     "element": [
-        "gold", "iron", "oxygen", "hydrogen", "carbon", "sodium", "helium",
-        "nitrogen", "silver", "copper", "zinc", "lead", "mercury", "neon",
+        "gold",
+        "iron",
+        "oxygen",
+        "hydrogen",
+        "carbon",
+        "sodium",
+        "helium",
+        "nitrogen",
+        "silver",
+        "copper",
+        "zinc",
+        "lead",
+        "mercury",
+        "neon",
     ],
     "vocab_word": [
-        "ephemeral", "ubiquitous", "pragmatic", "eloquent", "resilient", "paradigm",
-        "serendipity", "enigmatic", "juxtaposition", "quintessential", "mellifluous",
-        "sycophantic", "obfuscate", "perfunctory", "cacophony",
+        "ephemeral",
+        "ubiquitous",
+        "pragmatic",
+        "eloquent",
+        "resilient",
+        "paradigm",
+        "serendipity",
+        "enigmatic",
+        "juxtaposition",
+        "quintessential",
+        "mellifluous",
+        "sycophantic",
+        "obfuscate",
+        "perfunctory",
+        "cacophony",
     ],
     "fraction": ["1/4", "3/8", "5/6", "7/12", "2/3", "5/16", "11/13", "7/9"],
     "decimal": [3.7, 4.2, 8.9, 2.1, 6.5, 11.3, 0.4, 15.8, 99.6, 7.77],
@@ -627,56 +772,140 @@ FILL_VALUES: dict[str, list] = {
     "target": [5, 6, 7, 8, 9, 10, 11, 12],
     "n": [3, 4, 5, 6, 7, 8, 10],
     "topic": [
-        "climate change", "artificial intelligence", "space exploration", "music",
-        "cooking", "friendship", "time travel", "the ocean", "technology", "nature",
-        "social media", "education", "quantum computing", "renewable energy",
-        "mental health", "cryptocurrency", "remote work", "biodiversity",
-        "cybersecurity", "urbanization", "aging", "genetic engineering",
+        "climate change",
+        "artificial intelligence",
+        "space exploration",
+        "music",
+        "cooking",
+        "friendship",
+        "time travel",
+        "the ocean",
+        "technology",
+        "nature",
+        "social media",
+        "education",
+        "quantum computing",
+        "renewable energy",
+        "mental health",
+        "cryptocurrency",
+        "remote work",
+        "biodiversity",
+        "cybersecurity",
+        "urbanization",
+        "aging",
+        "genetic engineering",
     ],
     "concept": [
-        "loneliness", "freedom", "time", "innovation", "trust", "chaos",
-        "identity", "justice", "memory", "power", "empathy", "silence",
-        "consciousness", "entropy", "beauty", "truth",
+        "loneliness",
+        "freedom",
+        "time",
+        "innovation",
+        "trust",
+        "chaos",
+        "identity",
+        "justice",
+        "memory",
+        "power",
+        "empathy",
+        "silence",
+        "consciousness",
+        "entropy",
+        "beauty",
+        "truth",
     ],
     "animal": ["cat", "dog", "hamster", "parrot", "rabbit", "turtle", "goldfish", "ferret"],
     "product": [
-        "smart water bottle", "AI-powered notebook", "eco-friendly backpack",
-        "solar phone charger", "noise-cancelling sleep mask", "modular furniture kit",
+        "smart water bottle",
+        "AI-powered notebook",
+        "eco-friendly backpack",
+        "solar phone charger",
+        "noise-cancelling sleep mask",
+        "modular furniture kit",
     ],
     "business_type": [
-        "coffee shop", "tech startup", "bakery", "fitness studio", "bookstore",
-        "food truck", "consulting firm", "art gallery",
+        "coffee shop",
+        "tech startup",
+        "bakery",
+        "fitness studio",
+        "bookstore",
+        "food truck",
+        "consulting firm",
+        "art gallery",
     ],
     "genre": ["sci-fi", "fantasy", "mystery", "romance", "horror", "thriller", "dystopian"],
     "author": [
-        "Hemingway", "Tolkien", "Austen", "Orwell", "Kafka", "Poe",
-        "Asimov", "Bradbury", "Atwood", "Vonnegut",
+        "Hemingway",
+        "Tolkien",
+        "Austen",
+        "Orwell",
+        "Kafka",
+        "Poe",
+        "Asimov",
+        "Bradbury",
+        "Atwood",
+        "Vonnegut",
     ],
     "job_title": [
-        "software engineer", "data scientist", "product manager", "designer",
-        "marketing director", "CTO", "research scientist",
+        "software engineer",
+        "data scientist",
+        "product manager",
+        "designer",
+        "marketing director",
+        "CTO",
+        "research scientist",
     ],
     "event": [
-        "the moon landing", "a revolution", "a great migration",
-        "the last day of school", "a first contact with aliens",
+        "the moon landing",
+        "a revolution",
+        "a great migration",
+        "the last day of school",
+        "a first contact with aliens",
     ],
     "dish": [
-        "pasta carbonara", "chicken curry", "chocolate cake", "sushi rolls",
-        "pad thai", "beef stew", "tiramisu", "ramen", "tacos",
+        "pasta carbonara",
+        "chicken curry",
+        "chocolate cake",
+        "sushi rolls",
+        "pad thai",
+        "beef stew",
+        "tiramisu",
+        "ramen",
+        "tacos",
     ],
     "task": [
-        "setting up a home network", "changing a car tire", "deploying a web app",
-        "installing a ceiling fan", "setting up a development environment",
+        "setting up a home network",
+        "changing a car tire",
+        "deploying a web app",
+        "installing a ceiling fan",
+        "setting up a development environment",
     ],
     "language": [
-        "Spanish", "French", "Japanese", "Mandarin", "Arabic", "German",
-        "Korean", "Portuguese", "Russian", "Hindi", "Italian", "Swahili",
+        "Spanish",
+        "French",
+        "Japanese",
+        "Mandarin",
+        "Arabic",
+        "German",
+        "Korean",
+        "Portuguese",
+        "Russian",
+        "Hindi",
+        "Italian",
+        "Swahili",
     ],
     "language_a": ["English", "Spanish", "French", "Japanese", "German", "Mandarin"],
     "language_b": ["Spanish", "French", "German", "English", "Korean", "Arabic"],
     "foreign_word": [
-        "schadenfreude", "saudade", "ikigai", "hygge", "ubuntu", "wabi-sabi",
-        "lagom", "gezellig", "meraki", "toska",
+        "schadenfreude",
+        "saudade",
+        "ikigai",
+        "hygge",
+        "ubuntu",
+        "wabi-sabi",
+        "lagom",
+        "gezellig",
+        "meraki",
+        "toska",
     ],
     "sentence": [
         "The weather is beautiful today.",
@@ -719,17 +948,35 @@ def _fill_template(template: str, rng: random.Random) -> str:
 def _add_natural_variations(query: str, rng: random.Random) -> str:
     """Add natural language variations to make queries more diverse."""
     prefixes = [
-        "", "", "", "",  # Most queries have no prefix (weighted)
-        "Can you ", "Please ", "Help me ", "I need to ",
-        "Hey, ", "Quick question: ", "I was wondering, ",
-        "Could you help me ", "I'd like you to ",
+        "",
+        "",
+        "",
+        "",  # Most queries have no prefix (weighted)
+        "Can you ",
+        "Please ",
+        "Help me ",
+        "I need to ",
+        "Hey, ",
+        "Quick question: ",
+        "I was wondering, ",
+        "Could you help me ",
+        "I'd like you to ",
     ]
     suffixes = [
-        "", "", "", "", "",  # Most have no suffix
-        " Thanks.", " Please.", " Thanks in advance.",
-        " I'm in a hurry.", " This is urgent.",
-        " Explain your reasoning.", " Be thorough.",
-        " Keep it simple.", " Be brief.",
+        "",
+        "",
+        "",
+        "",
+        "",  # Most have no suffix
+        " Thanks.",
+        " Please.",
+        " Thanks in advance.",
+        " I'm in a hurry.",
+        " This is urgent.",
+        " Explain your reasoning.",
+        " Be thorough.",
+        " Keep it simple.",
+        " Be brief.",
     ]
     prefix = rng.choice(prefixes)
     suffix = rng.choice(suffixes)
@@ -768,12 +1015,14 @@ def generate_dataset(
                 query = _add_natural_variations(query, rng)
                 output_length = OUTPUT_LENGTHS.get(capability, {}).get(difficulty, "medium")
 
-                examples.append(TrainingExample(
-                    query=query,
-                    capability_weights={capability.value: 1.0},
-                    difficulty=difficulty,
-                    expected_output_length=output_length,
-                ))
+                examples.append(
+                    TrainingExample(
+                        query=query,
+                        capability_weights={capability.value: 1.0},
+                        difficulty=difficulty,
+                        expected_output_length=output_length,
+                    )
+                )
 
     # ── Mixed-capability examples ─────────────────────────────────────
     # Generate more mixed examples since they're harder to classify
@@ -784,12 +1033,14 @@ def generate_dataset(
             query = _fill_template(template, rng)
             query = _add_natural_variations(query, rng)
 
-            examples.append(TrainingExample(
-                query=query,
-                capability_weights=dict(weights),
-                difficulty=difficulty,
-                expected_output_length=output_length,
-            ))
+            examples.append(
+                TrainingExample(
+                    query=query,
+                    capability_weights=dict(weights),
+                    difficulty=difficulty,
+                    expected_output_length=output_length,
+                )
+            )
 
     rng.shuffle(examples)
     return examples

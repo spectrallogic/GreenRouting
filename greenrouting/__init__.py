@@ -114,12 +114,15 @@ __all__ = [
     "load_pretrained",
 ]
 
+
 # Lazy import for serving module (requires optional litellm dependency)
 def __getattr__(name: str) -> Any:
     if name == "GreenRoutingClient":
         from greenrouting.serving.client import GreenRoutingClient
+
         return GreenRoutingClient
     if name == "ModelConfig":
         from greenrouting.serving.client import ModelConfig
+
         return ModelConfig
     raise AttributeError(f"module 'greenrouting' has no attribute {name!r}")

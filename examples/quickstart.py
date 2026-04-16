@@ -35,19 +35,16 @@ def main() -> None:
     # ── 3. Route some queries ─────────────────────────────────────────
     # Simulate what the trained classifier would predict for each query
     test_queries = [
-        ("What is 2+2?",
-         QueryProfile.single(Capability.SIMPLE, difficulty=1)),
-        ("Explain quantum entanglement",
-         QueryProfile.single(Capability.KNOWLEDGE, difficulty=3)),
-        ("Write a binary search in Python",
-         QueryProfile.single(Capability.CODE, difficulty=3)),
-        ("Prove the Cauchy-Schwarz inequality",
-         QueryProfile.single(Capability.MATH, difficulty=5)),
-        ("Translate 'hello' to Spanish",
-         QueryProfile.single(Capability.SIMPLE, difficulty=1)),
+        ("What is 2+2?", QueryProfile.single(Capability.SIMPLE, difficulty=1)),
+        ("Explain quantum entanglement", QueryProfile.single(Capability.KNOWLEDGE, difficulty=3)),
+        ("Write a binary search in Python", QueryProfile.single(Capability.CODE, difficulty=3)),
+        ("Prove the Cauchy-Schwarz inequality", QueryProfile.single(Capability.MATH, difficulty=5)),
+        ("Translate 'hello' to Spanish", QueryProfile.single(Capability.SIMPLE, difficulty=1)),
         # Mixed-capability: code + math + reasoning
-        ("Write a Python script that solves a differential equation using RK4",
-         QueryProfile(capability_weights={"code": 0.5, "math": 0.35, "reasoning": 0.15}, difficulty=4)),
+        (
+            "Write a Python script that solves a differential equation using RK4",
+            QueryProfile(capability_weights={"code": 0.5, "math": 0.35, "reasoning": 0.15}, difficulty=4),
+        ),
     ]
 
     print("=" * 70)
@@ -65,11 +62,10 @@ def main() -> None:
 
         cap_str = profile.primary_capability.value
         if profile.is_mixed:
-            caps = ", ".join(f"{k} {v:.0%}" for k, v in
-                            sorted(profile.capability_weights.items(), key=lambda x: -x[1]))
+            caps = ", ".join(f"{k} {v:.0%}" for k, v in sorted(profile.capability_weights.items(), key=lambda x: -x[1]))
             cap_str = f"[{caps}]"
 
-        print(f"\nQuery: \"{query}\"")
+        print(f'\nQuery: "{query}"')
         print(f"  Needs:    {cap_str} (difficulty {profile.difficulty}/5)")
         print(f"  Routed:   {decision.selected_model}")
         print(f"  Energy:   {decision.energy_estimate_wh:.4f} Wh")

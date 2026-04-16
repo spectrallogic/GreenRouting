@@ -30,8 +30,11 @@ class TestEndToEnd:
         # Should pick one of the small/cheap models
         assert decision.energy_estimate_wh < 0.02
         assert decision.selected_model in [
-            "gpt-4o-mini", "claude-haiku", "llama-3.1-8b",
-            "gemini-2.0-flash", "mistral-small",
+            "gpt-4o-mini",
+            "claude-haiku",
+            "llama-3.1-8b",
+            "gemini-2.0-flash",
+            "mistral-small",
         ]
 
     def test_hard_math_routes_to_strong_model(self, full_registry):

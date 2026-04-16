@@ -123,7 +123,11 @@ def main() -> None:
         ("Solve for x: 3x + 7 = 22", "math", (1, 2)),
         ("Find the derivative of f(x) = 3x^3 + 2x^2", "math", (3, 4)),
         ("Prove that the square root of 2 is irrational", "math", (4, 5)),
-        ("If all cats are animals and all animals breathe, do all cats breathe?", "reasoning", (2, 3)),
+        (
+            "If all cats are animals and all animals breathe, do all cats breathe?",
+            "reasoning",
+            (2, 3),
+        ),
         ("You have 12 balls, one is heavier. Find it in 3 weighings.", "reasoning", (4, 5)),
         ("Write a haiku about nature", "creative", (1, 2)),
         ("Write a short story with a twist ending about time travel", "creative", (3, 4)),
@@ -131,8 +135,16 @@ def main() -> None:
         ("List exactly 3 benefits of exercise, numbered 1-3", "instruction", (2, 3)),
         # Mixed-capability queries
         ("Write a Python function to solve a quadratic equation", "code", (2, 4)),  # code + math
-        ("Explain the trolley problem and analyze it from utilitarian and deontological perspectives", "reasoning", (3, 5)),  # reasoning + knowledge
-        ("Write a historically accurate short story set during the French Revolution", "creative", (3, 4)),  # creative + knowledge
+        (
+            "Explain the trolley problem and analyze it from utilitarian and deontological perspectives",
+            "reasoning",
+            (3, 5),
+        ),  # reasoning + knowledge
+        (
+            "Write a historically accurate short story set during the French Revolution",
+            "creative",
+            (3, 4),
+        ),  # creative + knowledge
     ]
 
     # Classify each query and show results
@@ -179,8 +191,8 @@ def main() -> None:
         )
 
     console.print(results_table)
-    console.print(f"\nCapability accuracy: [bold]{correct_cap}/{total} ({correct_cap/total:.0%})[/bold]")
-    console.print(f"Difficulty accuracy: [bold]{correct_diff}/{total} ({correct_diff/total:.0%})[/bold]")
+    console.print(f"\nCapability accuracy: [bold]{correct_cap}/{total} ({correct_cap / total:.0%})[/bold]")
+    console.print(f"Difficulty accuracy: [bold]{correct_diff}/{total} ({correct_diff / total:.0%})[/bold]")
 
     # ── 6. Full routing pipeline demo ─────────────────────────────────
     console.rule("[bold blue]Step 6: Full routing pipeline (query string -> model selection)")
@@ -224,7 +236,7 @@ def main() -> None:
 
         compress_str = ""
         if hint.should_compress:
-            compress_str = f" +compress"
+            compress_str = " +compress"
 
         route_table.add_row(
             query[:60],
@@ -238,12 +250,16 @@ def main() -> None:
 
     # Impact report
     report = tracker.report()
-    console.print(f"\n[bold]Impact Report[/bold]")
+    console.print("\n[bold]Impact Report[/bold]")
     console.print(f"  Queries routed:  {report.total_queries}")
     console.print(f"  Energy used:     {report.total_energy_wh:.4f} Wh")
-    console.print(f"  Energy saved:    {report.energy_saved_wh:.4f} Wh ([bold green]{report.energy_saved_pct:.1f}%[/bold green])")
+    console.print(
+        f"  Energy saved:    {report.energy_saved_wh:.4f} Wh ([bold green]{report.energy_saved_pct:.1f}%[/bold green])"
+    )
     console.print(f"  Cost:            ${report.total_cost:.4f}")
-    console.print(f"  Cost saved:      ${report.cost_saved:.4f} ([bold green]{report.cost_saved_pct:.1f}%[/bold green])")
+    console.print(
+        f"  Cost saved:      ${report.cost_saved:.4f} ([bold green]{report.cost_saved_pct:.1f}%[/bold green])"
+    )
 
 
 if __name__ == "__main__":

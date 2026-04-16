@@ -12,30 +12,51 @@ from greenrouting.core.taxonomy import Capability, QueryProfile
 def benchmark_registry() -> ModelRegistry:
     """Registry with models that have benchmark scores."""
     reg = ModelRegistry()
-    reg.register(ModelProfile(
-        name="big-model",
-        provider="test",
-        estimated_params_b=200,
-        cost_per_1k_input=0.01,
-        energy_per_query_wh=0.2,
-        benchmark_scores={"mmlu": 0.90, "gsm8k": 0.95, "humaneval": 0.92, "arc_challenge": 0.96},
-    ))
-    reg.register(ModelProfile(
-        name="medium-model",
-        provider="test",
-        estimated_params_b=70,
-        cost_per_1k_input=0.003,
-        energy_per_query_wh=0.07,
-        benchmark_scores={"mmlu": 0.82, "gsm8k": 0.85, "humaneval": 0.80, "arc_challenge": 0.88},
-    ))
-    reg.register(ModelProfile(
-        name="small-model",
-        provider="test",
-        estimated_params_b=8,
-        cost_per_1k_input=0.0001,
-        energy_per_query_wh=0.005,
-        benchmark_scores={"mmlu": 0.68, "gsm8k": 0.70, "humaneval": 0.60, "arc_challenge": 0.73},
-    ))
+    reg.register(
+        ModelProfile(
+            name="big-model",
+            provider="test",
+            estimated_params_b=200,
+            cost_per_1k_input=0.01,
+            energy_per_query_wh=0.2,
+            benchmark_scores={
+                "mmlu": 0.90,
+                "gsm8k": 0.95,
+                "humaneval": 0.92,
+                "arc_challenge": 0.96,
+            },
+        )
+    )
+    reg.register(
+        ModelProfile(
+            name="medium-model",
+            provider="test",
+            estimated_params_b=70,
+            cost_per_1k_input=0.003,
+            energy_per_query_wh=0.07,
+            benchmark_scores={
+                "mmlu": 0.82,
+                "gsm8k": 0.85,
+                "humaneval": 0.80,
+                "arc_challenge": 0.88,
+            },
+        )
+    )
+    reg.register(
+        ModelProfile(
+            name="small-model",
+            provider="test",
+            estimated_params_b=8,
+            cost_per_1k_input=0.0001,
+            energy_per_query_wh=0.005,
+            benchmark_scores={
+                "mmlu": 0.68,
+                "gsm8k": 0.70,
+                "humaneval": 0.60,
+                "arc_challenge": 0.73,
+            },
+        )
+    )
     return reg
 
 

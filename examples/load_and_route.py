@@ -14,7 +14,7 @@ Or use the one-liner in your own code:
 
 from __future__ import annotations
 
-from greenrouting import load_pretrained, get_compression_hint
+from greenrouting import get_compression_hint, load_pretrained
 
 
 def main() -> None:

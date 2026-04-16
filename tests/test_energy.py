@@ -159,8 +159,6 @@ class TestGreenScorer:
 
     def test_from_config_quality_overrides_preset(self):
         """'quality' key should take priority over 'preset'."""
-        scorer = GreenScorer.from_config(
-            {"green_score": {"quality": 1.0, "preset": "maximum_green"}}
-        )
+        scorer = GreenScorer.from_config({"green_score": {"quality": 1.0, "preset": "maximum_green"}})
         # quality=1.0 should win, not maximum_green
         assert scorer.alpha == 1.0

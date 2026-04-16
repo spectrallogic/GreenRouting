@@ -23,7 +23,8 @@ def main() -> None:
         description="Train the GreenRouting classifier on synthetic data.",
     )
     parser.add_argument(
-        "--output", "-o",
+        "--output",
+        "-o",
         type=str,
         default=str(Path(__file__).parent.parent / "pretrained"),
         help="Directory to save the trained model (default: greenrouting/pretrained/)",
@@ -32,7 +33,9 @@ def main() -> None:
     parser.add_argument("--lr", type=float, default=1e-3, help="Learning rate (default: 1e-3)")
     parser.add_argument("--batch-size", type=int, default=64, help="Batch size (default: 64)")
     parser.add_argument(
-        "--n-per-category", type=int, default=150,
+        "--n-per-category",
+        type=int,
+        default=150,
         help="Training examples per category (default: 150, produces ~6600 total)",
     )
     parser.add_argument("--seed", type=int, default=42, help="Random seed (default: 42)")
@@ -87,7 +90,7 @@ def main() -> None:
     # Save
     print(f"\n[4/4] Saving model to {args.output}")
     router.save(args.output)
-    print(f"  Saved: classifier_head.pt + config.json")
+    print("  Saved: classifier_head.pt + config.json")
 
     # Show how to use it
     print(f"\n{'=' * 50}")
@@ -95,7 +98,7 @@ def main() -> None:
     print("  from greenrouting import load_pretrained")
     print(f'  router = load_pretrained("{args.output}")')
     print('  decision = router.route("What is 2+2?")')
-    print('  print(decision.selected_model)')
+    print("  print(decision.selected_model)")
 
 
 if __name__ == "__main__":

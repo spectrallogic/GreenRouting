@@ -30,9 +30,7 @@ class TestGreenRoutingClientClassifyOnly:
         assert decision.selected_model != "gpt-4o"
 
     def test_classify_complex_query_routes_capable(self):
-        decision = self.client.classify(
-            "Design a distributed consensus algorithm with Byzantine fault tolerance"
-        )
+        decision = self.client.classify("Design a distributed consensus algorithm with Byzantine fault tolerance")
         # Complex queries should route to more capable models
         assert decision.quality_estimate > 0.5
 
@@ -43,9 +41,7 @@ class TestGreenRoutingClientClassifyOnly:
         assert "system_instruction" in hint
 
     def test_compression_hint_complex_query(self):
-        hint = self.client.get_compression_hint(
-            "Prove the Riemann hypothesis"
-        )
+        hint = self.client.get_compression_hint("Prove the Riemann hypothesis")
         # Complex queries should not be compressed
         assert hint["should_compress"] is False
 
@@ -106,7 +102,8 @@ class TestGreenRoutingClientClassifyOnly:
         """Calling chat() without a completion function should explain options."""
         # This test only works if litellm is NOT installed
         try:
-            import litellm
+            import litellm  # noqa: F401
+
             pytest.skip("litellm is installed — can't test the fallback error")
         except ImportError:
             pass
@@ -149,9 +146,11 @@ class TestGreenRoutingClientClassifyOnly:
             completion_fn=mock_completion,
         )
 
-        response = client.chat_messages([
-            {"role": "user", "content": "What is 2+2?"},
-        ])
+        response = client.chat_messages(
+            [
+                {"role": "user", "content": "What is 2+2?"},
+            ]
+        )
 
         assert isinstance(response, RoutedResponse)
         assert response.routed_to in ["gpt-4o-mini", "llama-3.1-8b"]

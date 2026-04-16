@@ -55,10 +55,7 @@ class BenchmarkMatcher:
 
         # Use Green Score to pick the greenest among qualified models
         max_fitness = max(qualified.values()) if qualified else 1.0
-        quality_scores = {
-            name: score / max_fitness if max_fitness > 0 else 1.0
-            for name, score in qualified.items()
-        }
+        quality_scores = {name: score / max_fitness if max_fitness > 0 else 1.0 for name, score in qualified.items()}
 
         decision = self.scorer.select(self.registry, quality_scores)
 

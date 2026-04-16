@@ -38,10 +38,7 @@ _AGGRESSIVE = (
     "No pleasantries, no preamble, no summary."
 )
 
-_MODERATE = (
-    "Be concise and direct. Skip unnecessary preamble. "
-    "Focus on the answer, not the explanation unless asked."
-)
+_MODERATE = "Be concise and direct. Skip unnecessary preamble. Focus on the answer, not the explanation unless asked."
 
 
 def get_compression_hint(profile: QueryProfile) -> CompressionHint:

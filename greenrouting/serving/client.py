@@ -32,15 +32,15 @@ Three ways to use it:
 
 from __future__ import annotations
 
+from collections.abc import Callable
 from dataclasses import dataclass, field
-from typing import Any, Callable
+from typing import Any
 
 from greenrouting.core.compression import get_compression_hint
 from greenrouting.core.decision import RoutingDecision
 from greenrouting.core.registry import ModelRegistry
 from greenrouting.energy.profiles import get_known_profiles
 from greenrouting.energy.tracker import EnergyTracker
-
 
 # Type for user-provided completion functions
 # Signature: (model: str, messages: list[dict], **kwargs) -> str
@@ -148,11 +148,13 @@ class GreenRoutingClient:
                     else:
                         from greenrouting.core.model_profile import ModelProfile
 
-                        self.registry.register(ModelProfile(
-                            name=model.name,
-                            provider=model.provider or "custom",
-                            model_id=model.model_id or model.name,
-                        ))
+                        self.registry.register(
+                            ModelProfile(
+                                name=model.name,
+                                provider=model.provider or "custom",
+                                model_id=model.model_id or model.name,
+                            )
+                        )
                     self.model_configs[model.name] = model
 
         # Load the classifier
@@ -194,8 +196,10 @@ class GreenRoutingClient:
         max_energy = max(s.energy_estimate_wh for s in decision.all_scores.values())
         max_cost = max(s.cost_estimate for s in decision.all_scores.values())
         self.tracker.record(
-            decision.energy_estimate_wh, max_energy,
-            decision.cost_estimate, max_cost,
+            decision.energy_estimate_wh,
+            max_energy,
+            decision.cost_estimate,
+            max_cost,
         )
 
         return decision
@@ -219,8 +223,7 @@ class GreenRoutingClient:
             "level": hint.level if hint.should_compress else None,
             "estimated_token_savings_pct": hint.estimated_token_savings_pct,
             "system_instruction": (
-                "Be concise and direct. Give the shortest accurate answer possible."
-                if hint.should_compress else ""
+                "Be concise and direct. Give the shortest accurate answer possible." if hint.should_compress else ""
             ),
         }
 
@@ -264,9 +267,7 @@ class GreenRoutingClient:
             messages.append({"role": "system", "content": system})
 
         if hint.should_compress:
-            compress_instruction = (
-                "Be concise and direct. Give the shortest accurate answer possible."
-            )
+            compress_instruction = "Be concise and direct. Give the shortest accurate answer possible."
             if messages and messages[0]["role"] == "system":
                 messages[0]["content"] += f"\n\n{compress_instruction}"
             else:
@@ -292,8 +293,10 @@ class GreenRoutingClient:
         max_energy = max(s.energy_estimate_wh for s in decision.all_scores.values())
         max_cost = max(s.cost_estimate for s in decision.all_scores.values())
         self.tracker.record(
-            decision.energy_estimate_wh, max_energy,
-            decision.cost_estimate, max_cost,
+            decision.energy_estimate_wh,
+            max_energy,
+            decision.cost_estimate,
+            max_cost,
         )
 
         return RoutedResponse(
@@ -342,9 +345,7 @@ class GreenRoutingClient:
         # Apply compression
         final_messages = list(messages)
         if hint.should_compress:
-            compress_instruction = (
-                "Be concise and direct. Give the shortest accurate answer possible."
-            )
+            compress_instruction = "Be concise and direct. Give the shortest accurate answer possible."
             if final_messages and final_messages[0]["role"] == "system":
                 final_messages[0] = {
                     **final_messages[0],
@@ -369,8 +370,10 @@ class GreenRoutingClient:
         max_energy = max(s.energy_estimate_wh for s in decision.all_scores.values())
         max_cost = max(s.cost_estimate for s in decision.all_scores.values())
         self.tracker.record(
-            decision.energy_estimate_wh, max_energy,
-            decision.cost_estimate, max_cost,
+            decision.energy_estimate_wh,
+            max_energy,
+            decision.cost_estimate,
+            max_cost,
         )
 
         return RoutedResponse(

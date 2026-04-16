@@ -16,13 +16,14 @@ import logging
 import os
 import warnings
 
-from greenrouting import load_pretrained, get_compression_hint, GreenScorer
+from rich import box
 
 # Rich is already a dependency of greenrouting
 from rich.console import Console
-from rich.table import Table
 from rich.panel import Panel
-from rich import box
+from rich.table import Table
+
+from greenrouting import GreenScorer, get_compression_hint, load_pretrained
 
 console = Console()
 
@@ -54,20 +55,20 @@ DEMO_QUERIES = [
     ("Write a Python function that implements binary search", "Code generation"),
     ("Prove that the square root of 2 is irrational", "Advanced math"),
     (
-        "Analyze the trade-offs between microservices and monolithic architecture "
-        "for a startup with 5 engineers",
+        "Analyze the trade-offs between microservices and monolithic architecture for a startup with 5 engineers",
         "Complex reasoning",
     ),
     ("Write a haiku about autumn leaves", "Creative writing"),
     ("Translate 'The meeting is at 3pm tomorrow' to Japanese", "Multilingual"),
     (
-        "Write a Python script that uses numerical methods to solve "
-        "a system of differential equations",
+        "Write a Python script that uses numerical methods to solve a system of differential equations",
         "Mixed: code + math + reasoning",
     ),
-    ("Summarize this text in one sentence: AI is transforming industries.", "Instruction following"),
+    (
+        "Summarize this text in one sentence: AI is transforming industries.",
+        "Instruction following",
+    ),
 ]
-
 
 
 def run_demo() -> None:
@@ -86,9 +87,7 @@ def run_demo() -> None:
     # Load the pre-trained classifier
     console.print("\n[dim]Loading pre-trained classifier...[/dim]")
     router = _quiet_load()
-    console.print(
-        f"[green]Ready![/green] {len(router.registry)} models in pool.\n"
-    )
+    console.print(f"[green]Ready![/green] {len(router.registry)} models in pool.\n")
 
     # ── Part 1: Classification ───────────────────────────────────────────
 
@@ -107,14 +106,12 @@ def run_demo() -> None:
         profile = router.classify_query(query)
 
         # Format capability weights
-        caps = sorted(
-            profile.capability_weights.items(), key=lambda x: x[1], reverse=True
-        )
+        caps = sorted(profile.capability_weights.items(), key=lambda x: x[1], reverse=True)
         cap_str = ", ".join(f"{c} {w:.0%}" for c, w in caps if w >= 0.05)
 
         # Difficulty bar
-        diff_bar = "[red]" + ("*" * profile.difficulty) + "[/red]" + (
-            "[dim]" + ("." * (5 - profile.difficulty)) + "[/dim]"
+        diff_bar = (
+            "[red]" + ("*" * profile.difficulty) + "[/red]" + ("[dim]" + ("." * (5 - profile.difficulty)) + "[/dim]")
         )
 
         # Truncate query for display
@@ -158,16 +155,12 @@ def run_demo() -> None:
 
     console.print(route_table)
 
-    console.print(
-        "\n[dim]Usage:  router = load_pretrained(quality=0.7)[/dim]\n"
-    )
+    console.print("\n[dim]Usage:  router = load_pretrained(quality=0.7)[/dim]\n")
 
     # ── Part 3: Energy savings detail ────────────────────────────────────
 
     console.rule("[bold]3. Energy Savings Detail[/bold]")
-    console.print(
-        "\nFor each query, we show the energy used vs. always picking the largest model.\n"
-    )
+    console.print("\nFor each query, we show the energy used vs. always picking the largest model.\n")
 
     balanced_router = q_routers[0.5]
 
@@ -211,16 +204,8 @@ def run_demo() -> None:
             total_max_cost += decision.all_scores[max_energy_model.name].cost_estimate
 
     energy_table.add_section()
-    overall_savings = (
-        (total_max_energy - total_routed_energy) / total_max_energy
-        if total_max_energy > 0
-        else 0
-    )
-    cost_savings = (
-        (total_max_cost - total_routed_cost) / total_max_cost
-        if total_max_cost > 0
-        else 0
-    )
+    overall_savings = (total_max_energy - total_routed_energy) / total_max_energy if total_max_energy > 0 else 0
+    cost_savings = (total_max_cost - total_routed_cost) / total_max_cost if total_max_cost > 0 else 0
     energy_table.add_row(
         "[bold]TOTAL (10 queries)[/bold]",
         "",
@@ -272,7 +257,9 @@ def run_demo() -> None:
             f"Across {len(DEMO_QUERIES)} queries with the [bold]balanced[/bold] preset:\n"
             f"  Energy saved:  [bold]{overall_savings:.0%}[/bold] vs always using {max_energy_model.name}\n"
             f"  Cost saved:    [bold]{cost_savings:.0%}[/bold]\n\n"
-            f"At scale (1M queries/day), that's ~[bold]{total_max_energy / len(DEMO_QUERIES) * 1_000_000 - total_routed_energy / len(DEMO_QUERIES) * 1_000_000:.0f} Wh[/bold] saved daily.\n\n"
+            f"At scale (1M queries/day), that's ~[bold]"
+            f"{(total_max_energy - total_routed_energy) / len(DEMO_QUERIES) * 1_000_000:.0f} Wh"
+            f"[/bold] saved daily.\n\n"
             f"[dim]No API keys were used. GreenRouting routes based on query\n"
             f"classification and model benchmarks, not live API calls.[/dim]",
             border_style="green",

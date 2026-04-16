@@ -11,21 +11,21 @@ Queries can require MULTIPLE capabilities with different weights. For example:
 
 from __future__ import annotations
 
-from dataclasses import dataclass, field
+from dataclasses import dataclass
 from enum import Enum
 
 
 class Capability(str, Enum):
     """Core capability dimensions, aligned with standard LLM benchmarks."""
 
-    REASONING = "reasoning"        # Logic, analysis, multi-step thinking (ARC, BBH)
-    MATH = "math"                  # Mathematical problem solving (GSM8K, MATH)
-    CODE = "code"                  # Code generation and understanding (HumanEval, MBPP)
-    KNOWLEDGE = "knowledge"        # Factual knowledge retrieval (MMLU, TriviaQA)
-    CREATIVE = "creative"          # Creative writing, brainstorming (MT-Bench creative)
-    INSTRUCTION = "instruction"    # Following complex instructions (IFEval)
+    REASONING = "reasoning"  # Logic, analysis, multi-step thinking (ARC, BBH)
+    MATH = "math"  # Mathematical problem solving (GSM8K, MATH)
+    CODE = "code"  # Code generation and understanding (HumanEval, MBPP)
+    KNOWLEDGE = "knowledge"  # Factual knowledge retrieval (MMLU, TriviaQA)
+    CREATIVE = "creative"  # Creative writing, brainstorming (MT-Bench creative)
+    INSTRUCTION = "instruction"  # Following complex instructions (IFEval)
     MULTILINGUAL = "multilingual"  # Non-English language tasks
-    SIMPLE = "simple"              # Trivial tasks any model can handle
+    SIMPLE = "simple"  # Trivial tasks any model can handle
 
 
 # Maps each capability to well-known benchmarks that measure it
@@ -96,11 +96,7 @@ class QueryProfile:
     @property
     def is_trivial(self) -> bool:
         """Whether any model in the pool could handle this."""
-        return (
-            self.difficulty <= 2
-            and self.primary_capability == Capability.SIMPLE
-            and not self.is_mixed
-        )
+        return self.difficulty <= 2 and self.primary_capability == Capability.SIMPLE and not self.is_mixed
 
     def min_benchmark_threshold(self) -> float:
         """Minimum benchmark score a model should have for this query.

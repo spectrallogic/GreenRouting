@@ -2,7 +2,6 @@
 
 from greenrouting.core.taxonomy import Capability
 from greenrouting.training.synthetic_data import (
-    TrainingExample,
     generate_dataset,
     load_dataset,
     save_dataset,

@@ -70,10 +70,13 @@ greenrouting = ["pretrained/*.pt", "pretrained/*.json"]
 
 [tool.ruff]
 target-version = "py310"
-line-length = 100
+line-length = 120
 
 [tool.ruff.lint]
 select = ["E", "F", "I", "N", "W", "UP"]
+
+[tool.ruff.lint.per-file-ignores]
+"greenrouting/training/synthetic_data.py" = ["E501"]
 
 [tool.mypy]
 python_version = "3.10"
