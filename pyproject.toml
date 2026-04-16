@@ -60,7 +60,7 @@ Repository = "https://github.com/spectrallogic/GreenRouting"
 Issues = "https://github.com/spectrallogic/GreenRouting/issues"
 
 [project.scripts]
-greenrouting = "greenrouting.cli:main"
+greenrouting-demo = "greenrouting.demo:main"
 
 [tool.setuptools.packages.find]
 include = ["greenrouting*"]

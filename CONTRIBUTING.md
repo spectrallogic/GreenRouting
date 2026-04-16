@@ -104,9 +104,10 @@ User Query
 - **Classifier** (`routers/classifier_router.py`): Frozen sentence-transformers encoder + trainable MLP head
 - **Taxonomy** (`core/taxonomy.py`): 8 capability dimensions, weighted profiles
 - **Matcher** (`core/matcher.py`): Maps query profiles to model fitness scores
-- **Scorer** (`energy/green_score.py`): Composite metric balancing quality, energy, cost
+- **Scorer** (`energy/green_score.py`): Composite metric balancing quality, energy, cost. Supports a single `quality` dial (0.0-1.0) via `GreenScorer.from_quality()` for simple control, or named presets (`balanced`, `quality_first`, `maximum_green`), or custom alpha/beta/gamma weights.
 - **Profiles** (`energy/profiles.py`): Model benchmark scores and energy data
 - **Training** (`training/`): Synthetic data generation and training pipeline
+- **Client** (`serving/client.py`): Universal routing client for agent frameworks, APIs, and direct use (requires optional `litellm`)
 
 ## Questions?
 

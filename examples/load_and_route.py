@@ -50,24 +50,14 @@ def main() -> None:
             f"{decision.energy_savings_vs_max:>7.0%}"
         )
 
-    # Show how to use with custom model pools and presets
-    print("\n--- Custom configurations ---\n")
+    # Show how to control the quality vs energy trade-off
+    print("\n--- Quality dial (0.0 = max green, 1.0 = max quality) ---\n")
 
-    # Maximum green: prioritize energy savings over quality
-    from greenrouting import ModelRegistry, GreenScorer, BenchmarkMatcher, get_known_profiles
-
-    router_green = load_pretrained(
-        scorer_config={"green_score": {"preset": "maximum_green"}}
-    )
-    decision = router_green.route("Explain quantum computing")
-    print(f"maximum_green preset: {decision.selected_model} ({decision.energy_savings_vs_max:.0%} savings)")
-
-    # Quality first: prioritize quality, still save some energy
-    router_quality = load_pretrained(
-        scorer_config={"green_score": {"preset": "quality_first"}}
-    )
-    decision = router_quality.route("Explain quantum computing")
-    print(f"quality_first preset: {decision.selected_model} ({decision.energy_savings_vs_max:.0%} savings)")
+    query = "Explain quantum computing"
+    for q in [0.0, 0.3, 0.5, 0.7, 1.0]:
+        r = load_pretrained(quality=q)
+        d = r.route(query)
+        print(f"quality={q}: {d.selected_model:<20} ({d.energy_savings_vs_max:.0%} energy savings)")
 
 
 if __name__ == "__main__":

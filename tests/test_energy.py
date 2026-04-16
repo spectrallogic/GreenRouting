@@ -1,5 +1,7 @@
 """Tests for GreenScorer and energy estimation."""
 
+from pytest import approx
+
 from greenrouting.core.model_profile import ModelProfile
 from greenrouting.core.registry import ModelRegistry
 from greenrouting.energy.green_score import PRESETS, GreenScorer
@@ -108,3 +110,57 @@ class TestGreenScorer:
         balanced_energy = balanced_decision.energy_estimate_wh
         green_energy = green_decision.energy_estimate_wh
         assert green_energy <= balanced_energy
+
+    def test_from_quality_endpoints(self):
+        """quality=0 should maximize green, quality=1 should maximize quality."""
+        green = GreenScorer.from_quality(0.0)
+        assert green.alpha == approx(0.3)
+        assert green.beta == approx(0.5)
+        assert green.gamma == approx(0.2)
+
+        quality = GreenScorer.from_quality(1.0)
+        assert quality.alpha == approx(1.0)
+        assert quality.beta == approx(0.1)
+        assert quality.gamma == approx(0.1)
+
+    def test_from_quality_midpoint(self):
+        """quality=0.5 should produce balanced-ish weights."""
+        scorer = GreenScorer.from_quality(0.5)
+        assert scorer.alpha == approx(0.65)
+        assert scorer.beta == approx(0.3)
+        assert scorer.gamma == approx(0.15)
+
+    def test_from_quality_clamps(self):
+        """Values outside 0-1 should be clamped."""
+        low = GreenScorer.from_quality(-0.5)
+        assert low.alpha == 0.3  # same as q=0
+
+        high = GreenScorer.from_quality(2.0)
+        assert high.alpha == 1.0  # same as q=1
+
+    def test_from_quality_routing_effect(self, registry):
+        """Higher quality dial should favor higher-quality models."""
+        quality = {"gpt-4o": 0.95, "gpt-4o-mini": 0.7, "claude-sonnet": 0.9}
+
+        green_scorer = GreenScorer.from_quality(0.0)
+        quality_scorer = GreenScorer.from_quality(1.0)
+
+        green_decision = green_scorer.select(registry, quality)
+        quality_decision = quality_scorer.select(registry, quality)
+
+        # q=0 should pick more efficient model than q=1
+        assert green_decision.energy_estimate_wh <= quality_decision.energy_estimate_wh
+
+    def test_from_config_quality_key(self):
+        """Config with 'quality' key should use from_quality()."""
+        scorer = GreenScorer.from_config({"green_score": {"quality": 0.0}})
+        assert scorer.alpha == 0.3
+        assert scorer.beta == 0.5
+
+    def test_from_config_quality_overrides_preset(self):
+        """'quality' key should take priority over 'preset'."""
+        scorer = GreenScorer.from_config(
+            {"green_score": {"quality": 1.0, "preset": "maximum_green"}}
+        )
+        # quality=1.0 should win, not maximum_green
+        assert scorer.alpha == 1.0

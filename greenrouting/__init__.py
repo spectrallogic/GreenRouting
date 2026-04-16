@@ -31,6 +31,7 @@ def load_pretrained(
     model_dir: str | Path | None = None,
     registry: ModelRegistry | None = None,
     scorer_config: dict[str, Any] | None = None,
+    quality: float | None = None,
 ) -> ClassifierRouter:
     """Load a pre-trained GreenRouting classifier, ready to route queries.
 
@@ -45,6 +46,9 @@ def load_pretrained(
             built-in pool of 11 popular models (GPT-4o, Claude, Llama, etc.).
         scorer_config: Optional config dict for the GreenScorer preset.
             Defaults to ``{"green_score": {"preset": "balanced"}}``.
+        quality: Float from 0.0 to 1.0 controlling the quality vs energy
+            trade-off. 0.0 = maximum energy savings, 0.5 = balanced (default),
+            1.0 = maximum quality. Overrides scorer_config if both are given.
 
     Returns:
         A ClassifierRouter ready to call ``.route(query)`` on any string.
@@ -57,6 +61,9 @@ def load_pretrained(
         decision = router.route("What is 2+2?")
         print(decision.selected_model)        # "llama-3.1-8b"
         print(decision.energy_savings_vs_max) # 0.99
+
+        # Want smarter models? Turn up the quality dial:
+        router = load_pretrained(quality=0.8)
 
     Raises:
         FileNotFoundError: If no pre-trained model is found at the given path.
@@ -77,7 +84,11 @@ def load_pretrained(
 
     router = ClassifierRouter.load(path, registry)
 
-    if scorer_config:
+    # quality parameter takes priority over scorer_config
+    if quality is not None:
+        router.scorer = GreenScorer.from_quality(quality)
+        router.matcher = BenchmarkMatcher(registry, router.scorer)
+    elif scorer_config:
         router.scorer = GreenScorer.from_config(scorer_config)
         router.matcher = BenchmarkMatcher(registry, router.scorer)
 

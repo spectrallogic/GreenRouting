@@ -38,8 +38,32 @@ class GreenScorer:
     default_query_tokens: int = 500
 
     @classmethod
+    def from_quality(cls, quality: float) -> GreenScorer:
+        """Create a scorer from a single quality dial (0.0 to 1.0).
+
+        This is the simplest way to control the quality vs energy trade-off:
+            0.0 = maximum energy savings (picks smallest capable model)
+            0.5 = balanced (default)
+            1.0 = maximum quality (picks the smartest model available)
+
+        The dial smoothly interpolates the internal weights:
+            alpha (quality weight):  0.3 at q=0  ->  1.0 at q=1
+            beta  (energy penalty):  0.5 at q=0  ->  0.1 at q=1
+            gamma (cost penalty):    0.2 at q=0  ->  0.1 at q=1
+        """
+        q = max(0.0, min(1.0, quality))
+        alpha = 0.3 + 0.7 * q
+        beta = 0.5 - 0.4 * q
+        gamma = 0.2 - 0.1 * q
+        return cls(alpha=alpha, beta=beta, gamma=gamma)
+
+    @classmethod
     def from_config(cls, config: dict[str, Any]) -> GreenScorer:
         green_cfg = config.get("green_score", {})
+        # Single quality dial takes priority
+        quality = green_cfg.get("quality")
+        if quality is not None:
+            return cls.from_quality(float(quality))
         preset = green_cfg.get("preset")
         if preset and preset in PRESETS:
             alpha, beta, gamma = PRESETS[preset]

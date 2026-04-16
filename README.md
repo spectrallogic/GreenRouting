@@ -69,6 +69,21 @@ The classifier supports **multi-capability queries**. Real-world queries are mes
 
 ## Quick Start
 
+### See it in action
+
+Run the interactive demo to see GreenRouting classify and route 10 diverse queries across 3 presets — no API keys needed:
+
+```bash
+pip install greenrouting
+python -m greenrouting.demo
+```
+
+Or from the repo:
+
+```bash
+python examples/demo.py
+```
+
 ### Option 1: Load the pre-trained model (recommended)
 
 The package ships with a pre-trained classifier. One function call gives you a fully functional router:
