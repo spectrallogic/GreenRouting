@@ -239,6 +239,102 @@ Inspired by the [Caveman](https://github.com/JuliusBrussee/caveman) project, Gre
 
 This is additive to the energy savings from routing itself — for simple queries, you save on both the model used and the output generated.
 
+## Integration
+
+GreenRouting works with any setup — API providers, self-hosted models, agent frameworks, or custom infrastructure. You bring your own models and API access; the classifier runs locally and picks the optimal model.
+
+### Drop-in client (simplest)
+
+```python
+from greenrouting.serving import GreenRoutingClient
+
+# Just list the models you have access to — set API keys in env vars
+# Supports OpenAI, Anthropic, Google, Mistral, Ollama, and 100+ more via litellm
+client = GreenRoutingClient(
+    models=["gpt-4o", "gpt-4o-mini", "claude-haiku", "llama-3.1-8b"],
+    preset="balanced",
+)
+
+response = client.chat("What is 2+2?")
+print(response.content)              # "4"
+print(response.routed_to)            # "llama-3.1-8b"
+print(response.energy_savings_pct)   # 98.7
+```
+
+### Custom completion function (any backend)
+
+If you have your own LLM calling code, agent framework, or internal API:
+
+```python
+from greenrouting.serving import GreenRoutingClient
+
+def my_llm_call(model: str, messages: list, **kwargs) -> str:
+    # Your existing code — Ollama, vLLM, internal API, anything
+    return call_my_infrastructure(model, messages)
+
+client = GreenRoutingClient(
+    models=["gpt-4o-mini", "claude-haiku", "llama-3.1-8b"],
+    completion_fn=my_llm_call,
+)
+
+response = client.chat("Explain photosynthesis")
+# Classified -> routed -> called via YOUR function -> response returned
+```
+
+### Classify-only (you handle everything)
+
+For agent frameworks, custom pipelines, or when you just need the routing decision:
+
+```python
+from greenrouting.serving import GreenRoutingClient
+
+client = GreenRoutingClient(models=["gpt-4o", "gpt-4o-mini", "claude-haiku"])
+
+# Just get the routing decision — no API call made
+decision = client.classify("Write a sorting algorithm in Python")
+print(decision.selected_model)        # "gpt-4o-mini"
+print(decision.energy_savings_vs_max) # 0.98
+
+# Get compression hints for token savings
+hint = client.get_compression_hint("What is 2+2?")
+if hint["should_compress"]:
+    system_prompt += hint["system_instruction"]
+
+# Now call the model yourself, however you want
+```
+
+### Agent frameworks (CrewAI, LangChain, OpenAI Agents SDK, etc.)
+
+GreenRouting works with any agent framework. Use `classify()` as a routing layer, or pass `completion_fn` to wrap your agent's LLM calls:
+
+```python
+# CrewAI example — wrap the LLM call
+from greenrouting.serving import GreenRoutingClient
+
+client = GreenRoutingClient(
+    models=["gpt-4o", "gpt-4o-mini", "claude-haiku"],
+    completion_fn=lambda model, messages, **kw: crewai_llm_call(model, messages),
+)
+
+# LangChain example — use classify() to pick the model
+decision = client.classify(user_query)
+llm = ChatOpenAI(model=decision.selected_model)
+```
+
+### Self-hosted models (Ollama, vLLM, etc.)
+
+```python
+from greenrouting.serving import GreenRoutingClient, ModelConfig
+
+client = GreenRoutingClient(
+    models=[
+        ModelConfig(name="llama-3.1-8b", model_id="ollama/llama3.1:8b", api_base="http://localhost:11434"),
+        ModelConfig(name="llama-3.1-70b", model_id="ollama/llama3.1:70b", api_base="http://localhost:11434"),
+        "gpt-4o-mini",  # Mix local and cloud models
+    ],
+)
+```
+
 ## The AI Energy Crisis: Why This Matters Now
 
 ### The Problem
@@ -316,7 +412,7 @@ pip install greenrouting
 # With training support (torch, sentence-transformers, datasets)
 pip install greenrouting[train]
 
-# With proxy server (FastAPI, uvicorn)
+# With routing client (litellm — supports 100+ providers)
 pip install greenrouting[serve]
 
 # With direct energy measurement (CodeCarbon)
@@ -334,7 +430,8 @@ greenrouting/
     routers/        # ClassifierRouter (neural), RandomRouter (baseline)
     energy/         # Green Score, energy estimation, model profiles, tracker
     training/       # Synthetic data generator, trainer pipeline
-    serving/        # OpenAI-compatible client and FastAPI proxy (coming soon)
+    serving/        # GreenRoutingClient — drop-in proxy for any provider/framework
+    pretrained/     # Shipped model weights (classifier_head.pt + config.json)
 ```
 
 ## Contributing
