@@ -16,14 +16,19 @@ import logging
 import os
 import warnings
 
-from rich import box
+# Silence HF/tqdm noise before importing greenrouting (which imports transformers)
+os.environ.setdefault("TRANSFORMERS_VERBOSITY", "error")
+os.environ.setdefault("HF_HUB_DISABLE_PROGRESS_BARS", "1")
+os.environ.setdefault("TOKENIZERS_PARALLELISM", "false")
+
+from rich import box  # noqa: E402
 
 # Rich is already a dependency of greenrouting
-from rich.console import Console
-from rich.panel import Panel
-from rich.table import Table
+from rich.console import Console  # noqa: E402
+from rich.panel import Panel  # noqa: E402
+from rich.table import Table  # noqa: E402
 
-from greenrouting import GreenScorer, get_compression_hint, load_pretrained
+from greenrouting import GreenScorer, get_compression_hint, load_pretrained  # noqa: E402
 
 console = Console()
 
@@ -31,17 +36,18 @@ console = Console()
 def _quiet_load(**kwargs):
     """Load pretrained model with all loading noise suppressed."""
     logging.disable(logging.WARNING)
+    try:
+        from transformers.utils import logging as hf_logging
+
+        hf_logging.disable_progress_bar()
+        hf_logging.set_verbosity_error()
+    except Exception:
+        pass
     with warnings.catch_warnings():
         warnings.simplefilter("ignore")
-        _stderr = os.dup(2)
-        _devnull = os.open(os.devnull, os.O_WRONLY)
-        os.dup2(_devnull, 2)
         try:
             return load_pretrained(**kwargs)
         finally:
-            os.dup2(_stderr, 2)
-            os.close(_devnull)
-            os.close(_stderr)
             logging.disable(logging.NOTSET)
 
 

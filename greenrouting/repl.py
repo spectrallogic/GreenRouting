@@ -15,9 +15,14 @@ import logging
 import os
 import warnings
 
-from rich.console import Console
+# Silence HF/tqdm noise before importing greenrouting (which imports transformers)
+os.environ.setdefault("TRANSFORMERS_VERBOSITY", "error")
+os.environ.setdefault("HF_HUB_DISABLE_PROGRESS_BARS", "1")
+os.environ.setdefault("TOKENIZERS_PARALLELISM", "false")
 
-from greenrouting import get_compression_hint, load_pretrained
+from rich.console import Console  # noqa: E402
+
+from greenrouting import get_compression_hint, load_pretrained  # noqa: E402
 
 console = Console()
 
@@ -25,17 +30,18 @@ console = Console()
 def _quiet_load(quality: float):
     """Load pretrained model with loading noise suppressed."""
     logging.disable(logging.WARNING)
+    try:
+        from transformers.utils import logging as hf_logging
+
+        hf_logging.disable_progress_bar()
+        hf_logging.set_verbosity_error()
+    except Exception:
+        pass
     with warnings.catch_warnings():
         warnings.simplefilter("ignore")
-        stderr_fd = os.dup(2)
-        devnull = os.open(os.devnull, os.O_WRONLY)
-        os.dup2(devnull, 2)
         try:
             return load_pretrained(quality=quality)
         finally:
-            os.dup2(stderr_fd, 2)
-            os.close(devnull)
-            os.close(stderr_fd)
             logging.disable(logging.NOTSET)
 
 
@@ -63,8 +69,7 @@ def _route_and_print(router, query: str) -> None:
         f"cost=[cyan]${decision.cost_estimate:.5f}[/cyan]"
     )
     console.print(
-        f"     [dim]caps: {cap_str}  |  difficulty: {profile.difficulty}/5"
-        f"  |  compress: {hint.level}[/dim]\n"
+        f"     [dim]caps: {cap_str}  |  difficulty: {profile.difficulty}/5  |  compress: {hint.level}[/dim]\n"
     )
 
 
