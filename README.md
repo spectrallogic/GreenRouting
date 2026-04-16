@@ -84,6 +84,25 @@ Or from the repo:
 python examples/demo.py
 ```
 
+### Try it yourself (interactive REPL)
+
+Type your own queries and see which model gets picked, with live control over the quality dial:
+
+```bash
+python -m greenrouting.repl
+```
+
+```text
+(q=0.5) > What is 2+2?
+  -> llama-3.1-8b   energy=0.0050 Wh   savings=99%   cost=$0.00002
+
+(q=0.5) > /quality 1.0
+(q=1.0) > What is 2+2?
+  -> gpt-4o   energy=0.2500 Wh   savings=38%   cost=$0.00375
+```
+
+Commands: `/quality <0-1>` changes the dial, `/help` lists commands, `/quit` exits.
+
 ### Option 1: Load the pre-trained model (recommended)
 
 The package ships with a pre-trained classifier. One function call gives you a fully functional router:
