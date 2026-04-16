@@ -21,7 +21,7 @@ from greenrouting.routers.random_router import RandomRouter
 if TYPE_CHECKING:
     from typing import Any
 
-__version__ = "0.2.0"
+__version__ = "0.2.1"
 
 # Default location for the shipped pre-trained model
 _PRETRAINED_DIR = Path(__file__).parent / "pretrained"
