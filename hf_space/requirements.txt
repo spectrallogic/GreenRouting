@@ -1,2 +1,2 @@
 greenrouting>=0.2.2
-gradio>=4.44.0
+gradio>=5.0.0
