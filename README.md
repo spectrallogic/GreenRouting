@@ -33,15 +33,15 @@ Routing a sample workload of mixed queries across 11 models (GPT-4o, Claude Opus
 
 ### What This Means at Scale
 
-| Scale | Queries/Day | Energy Without Routing | Energy With GreenRouting | Annual Savings | Annual Cost Savings* |
+| Scale | Queries/Day | Daily Energy Without Routing | Daily Energy With GreenRouting | Annual Savings | Annual Cost Savings* |
 |-------|-------------|----------------------|------------------------|----------------|---------------------|
-| Startup | 10,000 | 4,000 Wh | 93 Wh | **~14 MWh/year** | ~$1,100/yr |
-| Mid-size | 1,000,000 | 400 kWh | 9.3 kWh | **~1,430 MWh/year** | ~$114K/yr |
-| Enterprise | 100,000,000 | 40 MWh | 930 Wh | **~143 GWh/year** | ~$11.4M/yr |
+| Startup | 10,000 | 4,000 Wh | 93 Wh | **~1.4 MWh/year** | ~$114/yr |
+| Mid-size | 1,000,000 | 400 kWh | 9.3 kWh | **~143 MWh/year** | ~$11.4K/yr |
+| Enterprise | 100,000,000 | 40 MWh | 930 Wh | **~14.3 GWh/year** | ~$1.14M/yr |
 
 *\*At $0.08/kWh commercial electricity rate.*
 
-For context: 143 GWh/year is roughly the annual electricity consumption of 13,000 US households — or about **16.3 MW of continuous load removed from the grid**.
+For context: 14.3 GWh/year is roughly the annual electricity consumption of ~1,360 US households — or about **1.63 MW of continuous load removed from the grid**. Scale linearly from there: a platform serving 1 billion queries/day would avoid ~16.3 MW of continuous demand.
 
 ## How It Works
 

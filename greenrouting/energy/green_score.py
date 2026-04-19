@@ -76,15 +76,27 @@ class GreenScorer:
         )
 
     def _estimate_energy(self, profile: ModelProfile) -> float:
-        """Estimate energy (Wh) for a single query on this model."""
+        """Estimate energy (Wh) for a single query on this model.
+
+        Uses a 4-tier fallback:
+          1. ``energy_per_query_wh`` if set (preferred — direct measurement).
+          2. ``estimated_params_b * 0.001`` Wh (params-scaling heuristic).
+          3. ``avg_latency_ms * 0.00005`` Wh (GPU-power-per-ms proxy).
+          4. ``default_energy_wh`` (0.05 Wh fallback).
+
+        Note on tiers 2–4: these coefficients are rough heuristics, not
+        calibrated against measured inference power draw. For production
+        use (or any reporting that requires defensible numbers), pass
+        ``energy_per_query_wh`` directly on ModelProfile — ideally derived
+        from CodeCarbon, MLCO2, or vendor-published per-query energy data.
+        The *relative* ranking between models is usually more meaningful
+        than the absolute Wh figures.
+        """
         if profile.energy_per_query_wh is not None:
             return profile.energy_per_query_wh
         if profile.estimated_params_b is not None:
-            # Rough heuristic: larger models use more energy
-            # ~0.001 Wh per billion parameters per query (calibratable)
             return profile.estimated_params_b * 0.001
         if profile.avg_latency_ms is not None:
-            # Latency proxy: ~0.00005 Wh per ms (rough GPU estimate)
             return profile.avg_latency_ms * 0.00005
         return self.default_energy_wh
 
