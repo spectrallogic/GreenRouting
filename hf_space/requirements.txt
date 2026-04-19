@@ -1,3 +1,2 @@
 greenrouting>=0.2.2
-gradio==4.44.1
-huggingface_hub<0.26
+gradio==5.12.0
